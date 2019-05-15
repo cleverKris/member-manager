@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Members</title>
+    <link href="assets/bootstrap.css" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="navbar navbar-dark navbar-expand-sm bg-dark shadow-sm">
+            <div class="container">
+                <a href="#" class="navbar-brand d-flex justify-content-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                         class="feather feather-aperture">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="14.31" y1="8" x2="20.05" y2="17.94"></line>
+                        <line x1="9.69" y1="8" x2="21.17" y2="8"></line>
+                        <line x1="7.38" y1="12" x2="13.12" y2="2.06"></line>
+                        <line x1="9.69" y1="16" x2="3.95" y2="6.06"></line>
+                        <line x1="14.31" y1="16" x2="2.83" y2="16"></line>
+                        <line x1="16.62" y1="12" x2="10.88" y2="21.94"></line>
+                    </svg>
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse"
+                        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav">
+                        <li class="nav-item active"><a class="nav-link" href="#">Members</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main role="main">
+        <section class="jumbotron mb-0 bg-white text-center">
+            <div class="container">
+                <h1 class="display-4"><span style="color: red;">Edit</span> member</h1>
+                <p class="lead text-muted">Edit a member~</p>
+            </div>
+        </section>
+
+        <div class="py-5 bg-light">
+            <form class="container">
+                <div class="row mb-3">
+                    <div class="col-md-9">
+                        <div class="form-group">
+                            <label for="input_name">Member name</label>
+                            <input type="text" class="form-control" id="input_name" placeholder="Enter member name">
+                        </div>
+                        <div class="form-group">
+                            <label for="input_bio">Member bio</label>
+                            <textarea class="form-control" id="input_bio" cols="80" rows="10"
+                                      placeholder="Enter member bio"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="w-100" for="input_avatar">
+                                <span class="d-block mb-2">Member avatar</span>
+                                <img id="renderImg" class="img-thumbnail w-100" src="/assets/default.png"
+                                     alt="Member avatar">
+                            </label>
+                            <!--限制上传文件的类型-->
+                            <input accept=".jpg,.png,.gif" type="file" class="form-control-file" id="input_avatar"
+                                   aria-describedby="input_avatar_label">
+                            <small id="input_avatar_label" class="form-text text-muted">Upload a picture.</small>
+                        </div>
+                    </div>
+                </div>
+                <button id="save" class="btn btn-primary btn-block">Save</button>
+            </form>
+        </div>
+    </main>
+
+    <footer class="py-5 text-muted">
+        <p class="container">
+      <span>this demo &copy; heima
+      <a class="float-right" href="#">Back to top &uparrow;</a>
+        </p>
+    </footer>
+
+    <script src="./assets/jquery.js"></script>
+    <script>
+        //21.预览图片 上传组件的change事件
+        $('#input_avatar').change(() => {
+            // console.log($('#input_avatar')[0].files[0]); //文件对象
+
+            //将文件对象 转成 图片路径
+            let url = URL.createObjectURL($('#input_avatar')[0].files[0]);
+
+            $('#renderImg').attr('src', url);
+        });
+
+        //21.接收参数
+        let arr = window.location.search.replace('?', '').split('=');
+        let obj = {};
+        obj[arr[0]] = arr[1];  //{id: "2"}
+
+
+        //22.为save按钮注册点击事件
+        $('#save').click(function (e) {
+            //阻止默认行为
+            e.preventDefault();
+
+            //获取参数id
+            let id = obj.id;
+
+            //23.获取修改后的内容
+            let name = $('#input_name').val();
+            let bio = $('#input_bio').val();
+
+            //这个对象存储的是 提交给服务器 post请求的参数
+            let fd = new FormData();
+            fd.append('id', id);
+            fd.append('name', name);
+            fd.append('avatar', $('#input_avatar')[0].files[0]);
+            fd.append('bio', bio);
+
+            $.ajax({
+                url: '/api/member-edit',
+                method: 'post',
+                data: fd,
+                processData: false,
+                contentType: false,
+                success: result => {
+                    alert(result.message);
+
+                    window.location = 'index.html';
+
+                }
+            })
+
+
+        })
+
+    </script>
+
+
+</body>
+
+</html>

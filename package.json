@@ -1,0 +1,11 @@
+{
+  "name": "member",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+  },
+  "keywords": [],
+  "author": "kris",
+  "license": "ISC"
+}

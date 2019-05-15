@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "name": "李四1",
+    "avatar": "/upload/icon-01.png",
+    "bio": "Hello!",
+    "created": "2018-12-20T13:56:24.209Z"
+  },
+  {
+    "id": 2,
+    "name": "荷包蛋",
+    "avatar": "/upload/icon-03.png",
+    "bio": "荷包蛋",
+    "created": "2019-05-14T13:58:34.002Z"
+  }
+]
